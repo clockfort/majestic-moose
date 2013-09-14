@@ -5,6 +5,7 @@ import Data.Char
 import System.IO
 import Data.Maybe
 import GHC.IO.Handle
+import Data.List
 
 main =	do
 	runMaybeT . forever $ do
@@ -14,9 +15,10 @@ main =	do
 		liftIO $ hSetEcho clone False
 		input <- liftIO $ hGetContents clone
 		let output = mooseConvert input
-		liftIO $ putStrLn $ mooseConvert input
-		done <- liftIO $ hIsEOF stdin
-		when (done) $ mzero
+		liftIO $ putStrLn $  mooseConvert input
+		pipeDone <- liftIO $ hIsEOF stdin
+		let interactiveDone =  '\EOT' `elem` input
+		when (pipeDone || interactiveDone) $ mzero
 
 
 mooseConvert :: [Char] -> [Char]
