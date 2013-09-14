@@ -24,4 +24,4 @@ mooseConvert string = do map (charConvert) string
 
 charConvert c = fromMaybe c $ lookup c mooseMap
 
-mooseMap = [('o','ø'),('O','Ø'),('y','i'),('Y','I')]
+mooseMap = [('o','ø'),('O','Ø'),('y','i'),('Y','I'),('a','å')]
