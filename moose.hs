@@ -6,21 +6,15 @@ import System.IO
 import Data.Maybe
 import GHC.IO.Handle
 
-main =	do
-	runMaybeT . forever $ do
+main =	runMaybeT . forever $ do
 		clone <- liftIO $ hDuplicate stdin
 		liftIO $ hSetBuffering clone NoBuffering
 		liftIO $ hSetBuffering stdout NoBuffering
 		liftIO $ hSetEcho clone False
 		input <- liftIO $ hGetContents clone
-		let output = mooseConvert input
-		liftIO $ putStrLn $ mooseConvert input
+		liftIO $ putStrLn $ map charConvert input
 		done <- liftIO $ hIsEOF stdin
-		when (done) $ mzero
-
-
-mooseConvert :: [Char] -> [Char]
-mooseConvert string = do map (charConvert) string
+		when done mzero
 
 charConvert c = fromMaybe c $ lookup c mooseMap
 
